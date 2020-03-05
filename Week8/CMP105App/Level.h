@@ -4,7 +4,8 @@
 #include "Framework/Input.h"
 #include <string>
 #include <iostream>
-
+#include "Framework/GameObject.h"
+#include "Framework/Collision.h"
 
 class Level{
 public:
@@ -23,4 +24,12 @@ private:
 	// Default variables for level class.
 	sf::RenderWindow* window;
 	Input* input;
+
+	GameObject beachBall;
+	GameObject beetchBoll;
+	sf::Texture bowl;
+	Collision thisCollision;
+	sf::Vector2f beachSpeed;
+	sf::Vector2f beetchSpeed;
+	bool collided;
 };
