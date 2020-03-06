@@ -32,4 +32,11 @@ private:
 	sf::Vector2f beachSpeed;
 	sf::Vector2f beetchSpeed;
 	bool collided;
+
+	GameObject goomBAH;
+	GameObject GOOmba;
+	sf::Texture gomba;
+	sf::Vector2f bahspeed;
+	sf::Vector2f goospeed;
+	bool goomColl;
 };
