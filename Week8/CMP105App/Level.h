@@ -6,6 +6,9 @@
 #include <iostream>
 #include "Framework/GameObject.h"
 #include "Framework/Collision.h"
+#include "Pong.h"
+#include "LeftPaddle.h"
+#include "RightPaddle.h"
 
 class Level{
 public:
@@ -25,7 +28,7 @@ private:
 	sf::RenderWindow* window;
 	Input* input;
 
-	GameObject beachBall;
+	/*GameObject beachBall;
 	GameObject beetchBoll;
 	sf::Texture bowl;
 	Collision thisCollision;
@@ -38,5 +41,13 @@ private:
 	sf::Texture gomba;
 	sf::Vector2f bahspeed;
 	sf::Vector2f goospeed;
-	bool goomColl;
+	bool goomColl;*/
+
+	Collision myCollision;
+	sf::Texture pongText;
+
+	Pong pong;
+	LeftPaddle leftPaddle;
+	RightPaddle rightPaddle;
+	bool collided;
 };

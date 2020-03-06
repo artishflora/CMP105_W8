@@ -1,6 +1,9 @@
 #include "Level.h"
 #include <ctime>
 #include <cstdlib>
+#include "Pong.h"
+#include "LeftPaddle.h"
+#include "RightPaddle.h"
 
 Level::Level(sf::RenderWindow* hwnd, Input* in)
 {
@@ -38,6 +41,27 @@ Level::Level(sf::RenderWindow* hwnd, Input* in)
 
 	goomColl = false;
 	srand(0);*/
+	Pong pongTemp(window, 100, 100);
+	LeftPaddle leftPaddleTemp(window, 20, 200);
+	RightPaddle rightPaddleTemp(window, 20, 200);
+
+	pongText.loadFromFile("gfx/BeachBall.png");
+	leftPaddle = leftPaddleTemp;
+	rightPaddle = rightPaddleTemp;
+	pong = pongTemp;
+
+	pong.setTexture(&pongText);
+	pong.setCollisionBox(0, 0, pong.getSize().x, pong.getSize().y);
+
+	leftPaddle.setFillColor(sf::Color::Cyan);
+	leftPaddle.setCollisionBox(0, 0, leftPaddle.getSize().x, leftPaddle.getSize().y);
+	leftPaddle.setInput(input);
+
+	rightPaddle.setFillColor(sf::Color::Magenta);
+	rightPaddle.setCollisionBox(0, 0, rightPaddle.getSize().x, rightPaddle.getSize().y);
+	rightPaddle.setInput(input);
+
+	collided = false;
 }
 
 Level::~Level()
@@ -48,7 +72,8 @@ Level::~Level()
 // handle user input
 void Level::handleInput(float dt)
 {
-
+	leftPaddle.handleInput(dt);
+	rightPaddle.handleInput(dt);
 }
 
 // Update game objects
@@ -91,6 +116,20 @@ void Level::update(float dt)
 	else if (goomColl) goomColl = false;
 	if (goomBAH.getPosition().y <= 0) bahspeed.y = bahspeed.y * -1;
 	if (GOOmba.getPosition().y >= (window->getSize().y - GOOmba.getSize().y)) goospeed.y = goospeed.y * -1;*/
+
+	pong.update(dt);
+	if ((myCollision.checkBoundingBox(&pong, &leftPaddle)) && (!collided))
+	{
+		collided = true;
+		pong.velocityChanger();
+	}
+	else if (collided) collided = false;
+	else if ((myCollision.checkBoundingBox(&pong, &rightPaddle)) && (!collided))
+	{
+		collided = true;
+		pong.collisionResponse(&pong);
+	}
+	else if (collided) collided = false;
 }
 
 // Render level
@@ -98,10 +137,14 @@ void Level::render()
 {
 	beginDraw();
 
-	window->draw(goomBAH);
+	/*window->draw(goomBAH);
 	window->draw(beachBall);
 	window->draw(beetchBoll);
-	window->draw(GOOmba);
+	window->draw(GOOmba);*/
+
+	window->draw(leftPaddle);
+	window->draw(rightPaddle);
+	window->draw(pong);
 
 	endDraw();
 }
