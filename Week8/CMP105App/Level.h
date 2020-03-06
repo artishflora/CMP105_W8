@@ -49,5 +49,6 @@ private:
 	Pong pong;
 	LeftPaddle leftPaddle;
 	RightPaddle rightPaddle;
-	bool collided;
+	bool leftcollided;
+	bool rightcollided;
 };

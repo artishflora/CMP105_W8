@@ -7,10 +7,11 @@ class LeftPaddle :
 		sf::RenderWindow* window;
 		
 	public:
-		LeftPaddle(sf::RenderWindow* win, int sizex, int sizey);
 		LeftPaddle();
 		~LeftPaddle();
 
 		void handleInput(float dt) override;
+		void getWindow(sf::RenderWindow* win);
+		void resetPosition();
 };
 

@@ -1,9 +1,6 @@
 #include "Level.h"
 #include <ctime>
 #include <cstdlib>
-#include "Pong.h"
-#include "LeftPaddle.h"
-#include "RightPaddle.h"
 
 Level::Level(sf::RenderWindow* hwnd, Input* in)
 {
@@ -41,27 +38,30 @@ Level::Level(sf::RenderWindow* hwnd, Input* in)
 
 	goomColl = false;
 	srand(0);*/
-	Pong pongTemp(window, 100, 100);
-	LeftPaddle leftPaddleTemp(window, 20, 200);
-	RightPaddle rightPaddleTemp(window, 20, 200);
 
-	pongText.loadFromFile("gfx/BeachBall.png");
-	leftPaddle = leftPaddleTemp;
-	rightPaddle = rightPaddleTemp;
-	pong = pongTemp;
-
+	pongText.loadFromFile("gfx/Beach_Ball.png");
 	pong.setTexture(&pongText);
-	pong.setCollisionBox(0, 0, pong.getSize().x, pong.getSize().y);
+	pong.setSize(sf::Vector2f(70, 70));
+	pong.setCollisionBox(0, 0, 70, 70);
+	pong.getWindow(window);
+	pong.resetPosition();
 
 	leftPaddle.setFillColor(sf::Color::Cyan);
-	leftPaddle.setCollisionBox(0, 0, leftPaddle.getSize().x, leftPaddle.getSize().y);
+	leftPaddle.setCollisionBox(50, 0, 0, 200);
 	leftPaddle.setInput(input);
+	leftPaddle.getWindow(window);
+	leftPaddle.setSize(sf::Vector2f(50, 200));
+	leftPaddle.resetPosition();
 
 	rightPaddle.setFillColor(sf::Color::Magenta);
-	rightPaddle.setCollisionBox(0, 0, rightPaddle.getSize().x, rightPaddle.getSize().y);
+	rightPaddle.setCollisionBox(0, 0, 0, 200);
 	rightPaddle.setInput(input);
+	rightPaddle.setSize(sf::Vector2f(50, 200));
+	rightPaddle.getWindow(window);
+	rightPaddle.resetPosition();
 
-	collided = false;
+	leftcollided = false;
+	rightcollided = false;
 }
 
 Level::~Level()
@@ -118,18 +118,21 @@ void Level::update(float dt)
 	if (GOOmba.getPosition().y >= (window->getSize().y - GOOmba.getSize().y)) goospeed.y = goospeed.y * -1;*/
 
 	pong.update(dt);
-	if ((myCollision.checkBoundingBox(&pong, &leftPaddle)) && (!collided))
+	if ((myCollision.checkBoundingBox(&pong, &leftPaddle)) && (!leftcollided))
 	{
-		collided = true;
+		leftcollided = true;
+		std::cout << "ouch" << std::endl;
 		pong.velocityChanger();
 	}
-	else if (collided) collided = false;
-	else if ((myCollision.checkBoundingBox(&pong, &rightPaddle)) && (!collided))
+	else if (leftcollided) leftcollided = false;
+
+	if ((myCollision.checkBoundingBox(&pong, &rightPaddle)) && (!rightcollided))
 	{
-		collided = true;
-		pong.collisionResponse(&pong);
+		rightcollided = true;
+		std::cout << "ouch" << std::endl;
+		pong.velocityChanger();
 	}
-	else if (collided) collided = false;
+	else if (rightcollided) rightcollided = false;
 }
 
 // Render level

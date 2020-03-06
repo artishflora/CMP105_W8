@@ -12,11 +12,12 @@ class Pong :
 		sf::RenderWindow* window;
 
 	public:
-		Pong(sf::RenderWindow *win, int sizex, int size);
 		Pong();
 		~Pong();
 
 		void update(float dt) override;
+		void getWindow(sf::RenderWindow* win);
+		void resetPosition();
 		void velocityChanger();
 };
 
